@@ -9,7 +9,6 @@
     "128": "icon.png"
   },
   "action": {},
-  "permissions": ["tabs"],
   "options_page": "options.html",
   "background": {
     "service_worker": "background.js"

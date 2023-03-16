@@ -57,12 +57,10 @@ function main() {
   }
 
   var copyButtonInsertedCount = 0;
-  // Iterating on threads and in the case of DMs, the whole message history is one thread
   document.querySelectorAll('c-wiz[data-topic-id][data-local-topic-id]').forEach(function (e, t, i) {
     const copy = e.querySelector('.gchat-booster-copy');
     const threadId = e.getAttribute('data-topic-id');
     if (threadId && !copy) {
-      // Adding copy thread link buttons to thread
       var copyButton = document.createElement('div');
       copyButton.className = 'gchat-booster-copy';
       copyButton.innerHTML = `
@@ -103,14 +101,14 @@ function main() {
           let roomId = '';
           let threadLink = '';
           if (inIframe()) {
-            // The new mail.google.com/chat application uses iframes that point to chat.google.com
-            // Rooms are now renamed to spaces. Getting the space id from an attribute in the element
             roomId = e.getAttribute('data-p').match(/space\/([^\\"]*)/)[1];
             threadLink = `https://mail.google.com/chat/#chat/space/${roomId}/${threadId}`;
           } else {
             roomId = window.location.pathname.match(/\/room\/([^\?\/]*)/)[1];
             threadLink = `https://chat.google.com/room/${roomId}/${threadId}`;
           }
+
+          const listMessageElement = document.querySelectorAll('[id^="roxTrG7nfyY/"]');
 
           const pinned = {
             ...objectMessagePinned,
@@ -143,8 +141,6 @@ function main() {
           let roomId = '';
           let threadLink = '';
           if (inIframe()) {
-            // The new mail.google.com/chat application uses iframes that point to chat.google.com
-            // Rooms are now renamed to spaces. Getting the space id from an attribute in the element
             roomId = e.getAttribute('data-p').match(/space\/([^\\"]*)/)[1];
             threadLink = `https://mail.google.com/chat/#chat/space/${roomId}/${threadId}`;
           } else {
