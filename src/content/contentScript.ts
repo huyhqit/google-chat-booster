@@ -1,164 +1,5 @@
 // @ts-nocheck
 
-function addStyle() {
-  const styleElement = document.createElement("style", { type: "text/css" });
-  styleElement.appendChild(
-    document.createTextNode(`
-      .gchat-xtra-copy {
-          margin-left: 4px;
-          border: 1px solid var(--button-follow-border-color);;
-          background-color: transparent;
-          border-radius: 12px;
-          box-sizing: border-box;
-          font-family: 'Google Sans',Arial,sans-serif;
-          font-size: .875rem;
-          font-weight: 500;
-          line-height: 1.25rem;
-          color: var(--primary-text-color);
-          padding: 0 12px;
-          height: 24px;
-          display: inline-flex;
-          align-items: center;
-          cursor: pointer;
-      }
-
-      .gchat-xtra-copy:hover {
-          border-color: transparent;
-          box-shadow: 0 1px 2px 0 rgba(60,64,67,0.30), 0 1px 3px 1px rgba(60,64,67,0.15);
-      }
-
-      .gchat-xtra-copy:active {
-          background-color: rgba(26,115,232,0.122)
-      }
-
-      .gchat-xtra-copy[data-tooltip] {
-          position: relative;
-      }
-
-      /* Base styles for the entire tooltip */
-      .gchat-xtra-copy[data-tooltip]:before,
-      .gchat-xtra-copy[data-tooltip]:after {
-          position: absolute;
-          visibility: hidden;
-          opacity: 0;
-          transition:
-              opacity 0.2s ease-in-out,
-              visibility 0.2s ease-in-out,
-              transform 0.2s cubic-bezier(0.71, 1.7, 0.77, 1.24);
-          transform:         translate3d(0, 0, 0);
-          pointer-events: none;
-      }
-
-      /* Show the entire tooltip on hover and focus */
-      .gchat-xtra-copy[data-tooltip]:hover:before,
-      .gchat-xtra-copy[data-tooltip]:hover:after,
-      .gchat-xtra-copy[data-tooltip]:focus:before,
-      .gchat-xtra-copy[data-tooltip]:focus:after {
-          visibility: visible;
-          opacity: 1;
-      }
-
-      /* Base styles for the tooltip's directional arrow */
-      .gchat-xtra-copy[data-tooltip]:before {
-          z-index: 1001;
-          border: 6px solid transparent;
-          background: transparent;
-          content: "";
-      }
-
-      /* Base styles for the tooltip's content area */
-      .gchat-xtra-copy[data-tooltip]:after {
-          z-index: 1000;
-          padding: 8px;
-          background-color: #000;
-          background-color: hsla(0, 0%, 20%, 0.9);
-          color: #fff;
-          content: attr(data-tooltip);
-          font-size: 14px;
-          line-height: 1.2;
-      }
-
-      /* Directions */
-
-      /* Top (default) */
-      .gchat-xtra-copy[data-tooltip]:before,
-      .gchat-xtra-copy[data-tooltip]:after {
-          bottom: 100%;
-          left: 50%;
-      }
-
-      .gchat-xtra-copy[data-tooltip]:before {
-          margin-left: -6px;
-          margin-bottom: -12px;
-          border-top-color: #000;
-          border-top-color: hsla(0, 0%, 20%, 0.9);
-      }
-
-      /* Horizontally align top/bottom tooltips */
-      .gchat-xtra-copy[data-tooltip]:after {
-          margin-left: -30px;
-      }
-
-      .gchat-xtra-copy[data-tooltip]:hover:before,
-      .gchat-xtra-copy[data-tooltip]:hover:after,
-      .gchat-xtra-copy[data-tooltip]:focus:before,
-      .gchat-xtra-copy[data-tooltip]:focus:after {
-          -webkit-transform: translateY(-12px);
-          -moz-transform:    translateY(-12px);
-          transform:         translateY(-12px);
-      }
-
-      /* Removes GitHub Enterprise and Google sign-in previews since they always show up empty */
-      a[aria-label="Build software better, together, Web Page."],
-      a[aria-label$="Google Accounts, Web Page."] {
-          display: none;
-      }
-
-      .button-pin {
-        font-size: 0.875rem;
-        line-height: 1.25rem;
-        font-weight: 500;
-        font-family: 'Google Sans',Arial,sans-serif;
-        display: inline-block;
-        padding: 0 12px;
-        margin-left: 4px;
-        color: var(--primary-text-color);
-        border: 1px solid var(--button-follow-border-color);
-        border-radius: 12px;
-      }
-
-      .button-pin:hover {
-        cursor: pointer;
-        border-color: transparent;
-        box-shadow: 0 1px 2px 0 rgba(60,64,67,0.30), 0 1px 3px 1px rgba(60,64,67,0.15);
-      }
-
-      .button-pinned {
-        font-size: 0.875rem;
-        line-height: 1.25rem;
-        font-family: 'Google Sans',Arial,sans-serif;
-        color: var(--primary-text-color);
-        padding: 0 12px;
-        border-left: 2px solid var(--button-follow-border-color);
-      }
-
-      .button-pinned:hover {
-        cursor: pointer;
-      }
-  `)
-  );
-
-  document.head.appendChild(styleElement);
-}
-
-function inIframe() {
-  try {
-    return window.self !== window.top;
-  } catch (e) {
-    return true;
-  }
-}
-
 function timeout(ms) {
   return new Promise((resolve) => setInterval(resolve, ms));
 }
@@ -177,14 +18,14 @@ async function scrollToElementPinned(value) {
 }
 
 function initPinned(roomTop, pinned) {
-  const buttonPin = document.createElement("a");
-  buttonPin.href = pinned.threadLink;
-  buttonPin.innerHTML = pinned.message;
-  buttonPin.className = "button-pinned";
-  buttonPin.id = pinned.threadId;
-  roomTop.appendChild(buttonPin);
+  const pinButton = document.createElement("a");
+  pinButton.href = pinned.threadLink;
+  pinButton.innerHTML = pinned.message;
+  pinButton.className = "gchat-booster-pinned";
+  pinButton.id = pinned.threadId;
+  roomTop.appendChild(pinButton);
 
-  // buttonPin.addEventListener("click", async (e) => {
+  // pinButton.addEventListener("click", async (e) => {
   //   const { id } = e.target;
 
   //   await scrollToElementPinned(`[data-topic-id=${id}]`);
@@ -197,25 +38,26 @@ function main() {
   );
 
   const roomTop = document.querySelector(".dKv0S.mXMold");
-  const buttonPinElement = document.querySelector(".button-pinned");
-  const listPinnedStringify = localStorage.getItem("google-chat") || "{}";
+  const pinnedButton = document.querySelector(".gchat-booster-pinned");
+  const listPinnedStringify =
+    localStorage.getItem("GoogleChatBoosterPinned") || "{}";
   const objectMessagePinned = JSON.parse(listPinnedStringify);
 
-  const rommId = document.querySelector("c-wiz")
-    ? (
-        document.querySelector("c-wiz").getAttribute("data-group-id") || []
-      )?.split("/")[1]
-    : "";
+  const rommId =
+    document.querySelector("c-wiz") &&
+    document.querySelector("c-wiz").getAttribute("data-group-id")
+      ? (
+          document.querySelector("c-wiz").getAttribute("data-group-id") || []
+        )?.split("/")[1]
+      : "";
 
   const pinned = objectMessagePinned[rommId];
 
-  console.log(pinned, buttonPinElement?.id);
-
   if (!!roomTop && !!pinned) {
-    if (!buttonPinElement) {
+    if (!pinnedButton) {
       initPinned(roomTop, pinned);
-    } else if (buttonPinElement && pinned?.threadId !== buttonPinElement.id) {
-      buttonPinElement.remove();
+    } else if (pinned?.threadId !== pinnedButton.id) {
+      pinnedButton.remove();
       initPinned(roomTop, pinned);
     }
   }
@@ -225,17 +67,17 @@ function main() {
   document
     .querySelectorAll("c-wiz[data-topic-id][data-local-topic-id]")
     .forEach(function (e, t, i) {
-      var copy = e.querySelector(".gchat-xtra-copy");
-      if (e.getAttribute("data-topic-id") && !copy) {
+      const copy = e.querySelector(".gchat-booster-copy");
+      const threadId = e.getAttribute("data-topic-id");
+      if (threadId && !copy) {
         // Adding copy thread link buttons to thread
         var copyButton = document.createElement("div");
-        copyButton.className = "gchat-xtra-copy";
+        copyButton.className = "gchat-booster-copy";
         copyButton.innerHTML = `
                       Copy thread link
                   `;
         copyButton.addEventListener("click", function () {
           const el = document.createElement("textarea");
-          const threadId = e.getAttribute("data-topic-id");
           if (inIframe()) {
             // The new mail.google.com/chat application uses iframes that point to chat.google.com
             // Rooms are now renamed to spaces. Getting the space id from an attribute in the element
@@ -256,41 +98,48 @@ function main() {
           }, 1000);
         });
 
+        const isThreadPinned = pinned?.threadId === threadId;
         const pinButton = document.createElement("div");
-        pinButton.className = "button-pin";
-        pinButton.innerHTML = "Pin";
 
-        pinButton.addEventListener("click", function () {
-          const threadId = e.getAttribute("data-topic-id");
-          let roomId = "";
-          let threadLink = "";
-          if (inIframe()) {
-            // The new mail.google.com/chat application uses iframes that point to chat.google.com
-            // Rooms are now renamed to spaces. Getting the space id from an attribute in the element
-            roomId = e.getAttribute("data-p").match(/space\/([^\\"]*)/)[1];
-            threadLink = `https://mail.google.com/chat/#chat/space/${roomId}/${threadId}`;
-          } else {
-            roomId = window.location.pathname.match(/\/room\/([^\?\/]*)/)[1];
-            threadLink = `https://chat.google.com/room/${roomId}/${threadId}`;
-          }
+        if (!isThreadPinned) {
+          pinButton.className = "gchat-booster-copy";
+          pinButton.innerHTML = "Pin";
 
-          const pinned = {
-            ...objectMessagePinned,
-            [roomId]: {
-              threadId,
-              threadLink,
-              message: "Thread pinned",
-            },
-          };
+          pinButton.addEventListener("click", function () {
+            const threadId = e.getAttribute("data-topic-id");
+            let roomId = "";
+            let threadLink = "";
+            if (inIframe()) {
+              // The new mail.google.com/chat application uses iframes that point to chat.google.com
+              // Rooms are now renamed to spaces. Getting the space id from an attribute in the element
+              roomId = e.getAttribute("data-p").match(/space\/([^\\"]*)/)[1];
+              threadLink = `https://mail.google.com/chat/#chat/space/${roomId}/${threadId}`;
+            } else {
+              roomId = window.location.pathname.match(/\/room\/([^\?\/]*)/)[1];
+              threadLink = `https://chat.google.com/room/${roomId}/${threadId}`;
+            }
 
-          localStorage.setItem("google-chat", JSON.stringify(pinned));
+            const pinned = {
+              ...objectMessagePinned,
+              [roomId]: {
+                threadId,
+                threadLink,
+                message: "Thread pinned",
+              },
+            };
 
-          pinButton.setAttribute("data-tooltip", "Pinned");
-          setTimeout(function () {
-            pinButton.removeAttribute("data-tooltip");
-            pinButton.remove();
-          }, 500);
-        });
+            localStorage.setItem(
+              "GoogleChatBoosterPinned",
+              JSON.stringify(pinned)
+            );
+
+            pinButton.setAttribute("data-tooltip", "Pinned");
+            setTimeout(function () {
+              pinButton.removeAttribute("data-tooltip");
+              pinButton.remove();
+            }, 1000);
+          });
+        }
 
         var buttonContainer = e.querySelector(
           'div[aria-label="Follow"] > span:first-of-type'
@@ -305,7 +154,7 @@ function main() {
 
           buttonContainer.parentElement.style =
             "display: inline-block; width: unset; opacity: 1;";
-          buttonContainer.parentElement.parentElement.appendChild(copyButton);
+          // buttonContainer.parentElement.parentElement.appendChild(copyButton);
           buttonContainer.parentElement.parentElement.appendChild(pinButton);
 
           // Follow button container gets hidden in channels where all notifications are enabled.
@@ -419,6 +268,146 @@ function main() {
 
   if (copyButtonInsertedCount > 1) {
     scrollContainer.scrollTop += 36;
+  }
+}
+
+function addStyle() {
+  const styleElement = document.createElement("style", { type: "text/css" });
+  styleElement.appendChild(
+    document.createTextNode(`
+      .gchat-booster-copy {
+          margin-left: 4px;
+          border: 1px solid var(--button-follow-border-color);;
+          background-color: transparent;
+          border-radius: 12px;
+          box-sizing: border-box;
+          font-family: 'Google Sans',Arial,sans-serif;
+          font-size: .875rem;
+          font-weight: 500;
+          line-height: 1.25rem;
+          color: var(--primary-text-color);
+          padding: 0 12px;
+          height: 24px;
+          display: inline-flex;
+          align-items: center;
+          cursor: pointer;
+      }
+
+      .gchat-booster-copy:hover {
+          border-color: transparent;
+          box-shadow: 0 1px 2px 0 rgba(60,64,67,0.30), 0 1px 3px 1px rgba(60,64,67,0.15);
+      }
+
+      .gchat-booster-copy:active {
+          background-color: rgba(26,115,232,0.122)
+      }
+
+      .gchat-booster-copy[data-tooltip] {
+          position: relative;
+      }
+
+      /* Base styles for the entire tooltip */
+      .gchat-booster-copy[data-tooltip]:before,
+      .gchat-booster-copy[data-tooltip]:after {
+          position: absolute;
+          visibility: hidden;
+          opacity: 0;
+          transition:
+              opacity 0.2s ease-in-out,
+              visibility 0.2s ease-in-out,
+              transform 0.2s cubic-bezier(0.71, 1.7, 0.77, 1.24);
+          transform:         translate3d(0, 0, 0);
+          pointer-events: none;
+      }
+
+      /* Show the entire tooltip on hover and focus */
+      .gchat-booster-copy[data-tooltip]:hover:before,
+      .gchat-booster-copy[data-tooltip]:hover:after,
+      .gchat-booster-copy[data-tooltip]:focus:before,
+      .gchat-booster-copy[data-tooltip]:focus:after {
+          visibility: visible;
+          opacity: 1;
+      }
+
+      /* Base styles for the tooltip's directional arrow */
+      .gchat-booster-copy[data-tooltip]:before {
+          z-index: 1001;
+          border: 6px solid transparent;
+          background: transparent;
+          content: "";
+      }
+
+      /* Base styles for the tooltip's content area */
+      .gchat-booster-copy[data-tooltip]:after {
+          z-index: 1000;
+          padding: 8px;
+          background-color: #000;
+          background-color: hsla(0, 0%, 20%, 0.9);
+          color: #fff;
+          content: attr(data-tooltip);
+          font-size: 14px;
+          line-height: 1.2;
+      }
+
+      /* Directions */
+
+      /* Top (default) */
+      .gchat-booster-copy[data-tooltip]:before,
+      .gchat-booster-copy[data-tooltip]:after {
+          bottom: 100%;
+          left: 50%;
+      }
+
+      .gchat-booster-copy[data-tooltip]:before {
+          margin-left: -6px;
+          margin-bottom: -12px;
+          border-top-color: #000;
+          border-top-color: hsla(0, 0%, 20%, 0.9);
+      }
+
+      /* Horizontally align top/bottom tooltips */
+      .gchat-booster-copy[data-tooltip]:after {
+          margin-left: -30px;
+      }
+
+      .gchat-booster-copy[data-tooltip]:hover:before,
+      .gchat-booster-copy[data-tooltip]:hover:after,
+      .gchat-booster-copy[data-tooltip]:focus:before,
+      .gchat-booster-copy[data-tooltip]:focus:after {
+          -webkit-transform: translateY(-12px);
+          -moz-transform:    translateY(-12px);
+          transform:         translateY(-12px);
+      }
+
+      /* Removes GitHub Enterprise and Google sign-in previews since they always show up empty */
+      a[aria-label="Build software better, together, Web Page."],
+      a[aria-label$="Google Accounts, Web Page."] {
+          display: none;
+      }
+
+      .gchat-booster-pinned {
+        font-size: 0.875rem;
+        line-height: 1.25rem;
+        font-family: 'Google Sans',Arial,sans-serif;
+        color: var(--primary-text-color);
+        padding: 0 12px;
+        border-left: 2px solid var(--button-follow-border-color);
+      }
+
+      .gchat-booster-pinned:hover {
+        cursor: pointer;
+      }
+  `)
+  );
+
+  document.head.appendChild(styleElement);
+}
+
+function inIframe() {
+  try {
+    return window.self !== window.top;
+  } catch (e) {
+    return true;
   }
 }
 
