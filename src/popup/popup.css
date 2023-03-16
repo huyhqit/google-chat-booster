@@ -1,0 +1,8 @@
+.popup {
+  width: 100px;
+  height: 100px;
+}
+
+.button-fill:hover {
+  cursor: pointer;
+}
