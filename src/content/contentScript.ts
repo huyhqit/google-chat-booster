@@ -607,4 +607,4 @@ addStyle();
 main();
 
 var el = document.documentElement;
-el.addEventListener('DOMSubtreeModified', debounce(main, 2000));
+el.addEventListener('DOMSubtreeModified', debounce(main, 1000));
